@@ -11,15 +11,24 @@ app.use(cookieParser());
 router.get('/likes/post', authMiddleWare, async (req, res) => {
   const user_id = res.locals.user.userId;
   const data = await like.findAll({
+    where: { user_id: user_id },
+    raw: true,
+    attributes: [
+      'user_id',
+      'post_id',
+      'post.title',
+      'post.content',
+      'post.like_cnt',
+      'post.createdAt',
+    ],
     include: [
       {
         model: post,
-        attributes: ['title', 'content', 'createdAt'],
+        attributes: [],
       },
     ],
-    where: { user_id: user_id },
+    order: [[post, 'like_cnt', 'desc']],
   });
-
   res.status(200).json({ data });
 });
 // 좋아요 추가,제거
@@ -41,7 +50,7 @@ router.put('/posts/:_postId/like', authMiddleWare, async (req, res) => {
     return;
   }
 
-  await post.increment({ like_cnt: -1 }, { where: { postId: post_id } });
+  await post.decrement({ like_cnt: 1 }, { where: { postId: post_id } });
   await like.destroy({ where: { post_id: post_id } });
   res.status(200).json({ message: '게시글의 좋아요를 취소하였습니다.' });
 });
