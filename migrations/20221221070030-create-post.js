@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.DATE,
       },
       like_cnt: {
-        type: sequelize.INTEGER,
+        type: Sequelize.INTEGER,
       },
     });
   },
