@@ -4,7 +4,6 @@ const SECRET_KEY = `homework2`;
 
 module.exports = (req, res, next) => {
   const { cookie } = req.headers;
-  console.log(req.headers);
   const [authType, authToken] = (cookie || '').split('=');
 
   if (!authToken || authType !== 'token') {

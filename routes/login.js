@@ -9,6 +9,21 @@ const app = express();
 app.use(cookieParser());
 
 router.post('/auth', async (req, res) => {
+  //  #swagger.description = '로그인'
+  //  #swagger.tags = ['User']
+  /*  #swagger.parameters[''] = {
+            in: 'body',
+            schema: {
+                nickname: 'test',
+                password: '1234',
+            }
+} */
+  /*  #swagger.responses[400] = {
+            description: '해당하는 유저가 존재하지 않는 경우',
+            schema: {
+                message: '닉네임 또는 패스워드를 확인해주세요.'
+            }
+} */
   const { nickname, password } = req.body;
 
   const users = await user.findOne({

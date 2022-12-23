@@ -1,0 +1,774 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Node.js 숙련주차 과제",
+    "description": "Node.js 숙련주차 과제",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "회원가입",
+        "parameters": [
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nickname": {
+                  "type": "string",
+                  "example": "test"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "1234"
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "1234"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "회원가입 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "회원가입에 성공하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "닉네임이 중복된 경우 or 비밀번호가 일치하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "중복된 닉네임입니다. or 패스워드가 일치하지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "412": {
+            "description": "닉네임과 패스워드 정규식을 만족하지 못하는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "닉네임 or 패스워드 형식이 올바르지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "로그인",
+        "parameters": [
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nickname": {
+                  "type": "string",
+                  "example": "test"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "1234"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "성공"
+          },
+          "400": {
+            "description": "해당하는 유저가 존재하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "닉네임 또는 패스워드를 확인해주세요."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/posts": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 조회",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "게시글 조회 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "posts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "postId": {
+                        "type": "number",
+                        "example": 21
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "게시물10"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "테스트"
+                      },
+                      "user_id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "like_cnt": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2022-12-22T13:38:13.000Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2022-12-22T13:38:13.000Z"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 작성",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "안녕하세요 제목입니다."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "안녕하세요 내용입니다."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 작성 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글을 생성하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          }
+        }
+      }
+    },
+    "/api/posts/{_postId}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 상세 조회",
+        "parameters": [
+          {
+            "name": "_postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 상세 조회 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "postId": {
+                      "type": "number",
+                      "example": 16
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "수정"
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "수정테스트"
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "like_cnt": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-12-22T01:07:21.000Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-12-22T13:54:12.000Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 수정",
+        "parameters": [
+          {
+            "name": "_postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "수정된 게시글 입니다."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "수정된 내용 입니다."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 수정 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글을 수정하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "게시글 조회 실패",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 조회에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 삭제",
+        "parameters": [
+          {
+            "name": "_postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 삭제 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글을 삭제하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          }
+        }
+      }
+    },
+    "/api/comments/{postId}": {
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "댓글 목록 조회",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "댓글 목록 조회 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "commentId": {
+                        "type": "number",
+                        "example": 17
+                      },
+                      "nickname": {
+                        "type": "string",
+                        "example": "김정민"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "테스트 댓글"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2022-12-22T03:35:13.000Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2022-12-22T03:35:13.000Z"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "댓글 작성",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string",
+                  "example": "댓글 입니다."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "성공"
+          },
+          "201": {
+            "description": "댓글 작성 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글을 작성하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "댓글 내용을 입력하지 않았을 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글 내용을 입력해주세요."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          }
+        }
+      }
+    },
+    "/api/comments/{_commentId}": {
+      "put": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "댓글 수정",
+        "parameters": [
+          {
+            "name": "_commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string",
+                  "example": "수정된 댓글입니다."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "댓글 수정 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글을 수정하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "댓글 내용을 입력하지 않았을 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글 내용을 입력해주세요."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "댓글을 조회하지 못했을 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글 조회에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "댓글 삭제",
+        "parameters": [
+          {
+            "name": "_commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "댓글 삭제 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글을 삭제하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          }
+        }
+      }
+    },
+    "/api/likes/post": {
+      "get": {
+        "tags": [
+          "Likes"
+        ],
+        "description": "좋아요 게시글 조회",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 조회 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "post_id": {
+                        "type": "number",
+                        "example": 15
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "테스트"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "테스트"
+                      },
+                      "like_cnt": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2022-12-21T12:38:35.000Z"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          }
+        }
+      }
+    },
+    "/api/posts/{_postId}/like": {
+      "put": {
+        "tags": [
+          "Likes"
+        ],
+        "description": "게시글 좋아요",
+        "parameters": [
+          {
+            "name": "_postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 좋아요 등록 OR 취소",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글의 좋아요를 등록 OR 취소하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          }
+        }
+      }
+    }
+  }
+}

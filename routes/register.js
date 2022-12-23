@@ -5,7 +5,34 @@ const { user } = require('../models');
 
 router.post('/users', async (req, res) => {
   const { nickname, password, confirm } = req.body;
-
+  //  #swagger.description = '회원가입'
+  //  #swagger.tags = ['User']
+  /*  #swagger.parameters[''] = {
+            in: 'body',
+            schema: {
+                nickname: 'test',
+                password: '1234',
+                confirmPassword: '1234',
+            }
+} */
+  /*  #swagger.responses[201] = {
+            description: '회원가입 성공',
+            schema: {
+                message: '회원가입에 성공하였습니다.'
+            }
+} */
+  /*  #swagger.responses[400] = {
+  description: '닉네임이 중복된 경우 or 비밀번호가 일치하지 않는 경우',
+  schema: {
+    message: '중복된 닉네임입니다. or 패스워드가 일치하지 않습니다.'
+  }
+} */
+  /*  #swagger.responses[412] = {
+          description: '닉네임과 패스워드 정규식을 만족하지 못하는 경우',
+          schema: {
+              message: '닉네임 or 패스워드 형식이 올바르지 않습니다.'
+          }
+} */
   if (password !== confirm) {
     res.status(400).send({
       errorMessage: '패스워드가 패스워드 확인란과 다릅니다.',
